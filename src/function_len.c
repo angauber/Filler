@@ -6,7 +6,7 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/19 10:53:58 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2018/12/19 17:27:30 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2018/12/20 14:54:47 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -57,27 +57,28 @@ int		max_height(char **str, int nb)
 	return (height);
 }
 
-void	find_pos(int **pos, char **pattern, int x)
+void	find_pos(char **pattern, t_filler *filler)
 {
 	int i;
 	int j;
 	int z;
 
-	i = -1;
+	i = 0;
 	z = 0;
-	while (++i < x)
+	while (z < filler->piece->points)
 	{
 		j = -1;
 		while (++j < ft_strlen(pattern[0]))
 		{
 			if (pattern[i][j] == '*')
 			{
-				pos[z] = malloc(sizeof(int *) * 2);
-				pos[z][0] = i;
-				pos[z][1] = j;
+				filler->piece->coord[z] = malloc(sizeof(int *) * 2);
+				filler->piece->coord[z][0] = i;
+				filler->piece->coord[z][1] = j;
 				z++;
 			}
 		}
+		i++;
 	}
 }
 
@@ -101,23 +102,29 @@ int		nb_point(char **pattern, int x)
 	return (ctr);
 }
 
-void	get_pattern(char **board, char **pattern, int x, FILE *fd, char p)
+void	print_filler(t_filler *filler, FILE *fd)
 {
-	int width;
-	int height;
-	int **pos;
+	fprintf(fd, "____ReCaP FiLlEr____\n\n\nplayer : %c\n", filler->player);
+	fprintf(fd, "board_width: %d board_height: %d\n", filler->board_width, filler->board_height);
+	fprintf(fd, "\n\n___PIECE___\nwidth %d height: %d\npoints: %d\n", filler->piece->width, filler->piece->height, filler->piece->points);
+}
 
-	width = max_width(pattern, x);
-	height = max_height(pattern, x);
-	fprintf(fd, "maxw: %d ---> maxh %d\n", width, height);
-	pos = malloc(sizeof(int **) * nb_point(pattern, x));
-	find_pos(pos, pattern, x);
-	for (int i=0; i<nb_point(pattern, x); i++)
+void	get_pattern(char **board, char **pattern, FILE *fd, t_filler *filler)
+{
+	filler->piece->points = nb_point(pattern, filler->piece->height);
+	filler->piece->prev_h = filler->piece->height;
+	filler->piece->prev_w = filler->piece->width;
+	filler->piece->width = max_width(pattern, filler->piece->prev_h);
+	filler->piece->height = max_height(pattern, filler->piece->prev_h);
+	filler->piece->coord = malloc(sizeof(int **) * filler->piece->points);
+	find_pos(pattern, filler);
+	for (int i=0; i<filler->piece->points; i++)
 	{
-		fprintf(fd, "x: %d", pos[i][0]);
-		fprintf(fd, " y: %d\n", pos[i][1]);
+		fprintf(fd, "x: %d", filler->piece->coord[i][0]);
+		fprintf(fd, " y: %d\n", filler->piece->coord[i][1]);
 	}
-	place_piece(board, pos, height, width, p, nb_point(pattern, x));
+	print_filler(filler, fd);
+	place_piece(board, filler);
 }
 
 // enregistrer tt les points de contacts exterieur pour pouvoir tester tout les positions
