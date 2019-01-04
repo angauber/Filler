@@ -1,0 +1,36 @@
+height: 2 width: 2 
+
+pattern: 
+
+.*
+**
+x: 0 y: 1
+x: 1 y: 0
+x: 1 y: 1
+____ReCaP FiLlEr____
+
+
+player : X
+board_width: 17 board_height: 15
+
+
+___PIECE___
+width 2 height: 2
+points: 3
+stop condition
+bottom to top
+..............OOO
+.............OOOO
+...............OO
+...............OX
+..............OOX
+..........OOOOOXX
+.......OOOOOXXXXX
+.......OXXXXXXXXX
+..OO.OOOXXXXXXXXX
+...OOOXXXXXXXXXXX
+.....OOXXXXXXXXXX
+..OOOOOOXXXXXXXX.
+.....OOOXXXXXXX..
+.....OOOOOOOOOOOO
+..........OOOOOOO

@@ -6,7 +6,7 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 11:19:09 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2018/12/18 15:28:54 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/04 13:43:39 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -54,39 +54,60 @@ void	print_tab(char **board, int len)
 	}
 	i = 0;
 	usleep(100000);
-//	while (i < len)
-//	{
+	while (i < len)
+	{
 //		ft_printf("\033[1A");  // move cursor one line up
-		ft_printf("\033[2J"); // delete till end of line
-//		i++;
-//	}
+//		ft_printf("\033[2J"); // delete till end of line
+		ft_printf("\033[2K"); // delete till end of line
+		ft_printf("\033[1A");  // move cursor one line up
+		i++;
+	}
+}
+
+void	print_vs(char *s1, char *s2)
+{
+	ft_printf(KCYN "\n\t%s" RESET, s1);
+	ft_printf("   VS   ");
+	ft_printf(KMAG "%s" RESET, s2);
+	ft_printf("\n\n");
 }
 
 int		main()
 {
 	char	**board;
+	char	**split;
 	char	*line;
+	char	*s1;
+	char	*s2;
 	int		i;
 	int		x;
 	int		y;
 	int		j;
 
-	i = -1;
-	x = 0;
+	while (get_next_line(0, &line) != 0 && ft_strstr(line, "launched") == NULL)
+		x = 0;
+	while (line[x] != '/')
+		x++;
+	x++;
+	i = x;
+	while (line[i] != '.')
+		i++;
+	s1 = ft_strsub(line, x, i);
+	while (get_next_line(0, &line) != 0 && ft_strstr(line, "launched") == NULL)
+		x = 0;
+	while (line[x] != '/')
+		x++;
+	x++;
+	i = x;
+	while (line[i] != '.')
+		i++;
+	s2 = ft_strsub(line, x, i);
+	print_vs(s1, s2);
 	while (get_next_line(0, &line) != 0 && ft_strstr(line, "Plateau") == NULL)
 		x = 0;
-	while (line[++i] != '\0')
-	{
-		if (line[i] >= '0' && line[i] <= '9')
-		{
-			if (!x)
-				x = ft_atoi(&line[i]);
-			else
-				y = ft_atoi(&line[i]);
-			while (line[i] != '\0' && line[i] != ' ')
-				i++;
-		}
-	}
+	split = ft_strsplit(line, ' ');
+	x = ft_atoi(split[1]);
+	y = ft_atoi(split[2]);
 	board = malloc(sizeof(char **) * x);
 	j = 0;
 	while (get_next_line(0, &line) != 0)
@@ -101,6 +122,12 @@ int		main()
 			board[j] = ft_strsub(line, 4, y + 4);
 			j++;
 		}
+	}
+	i = 0;
+	while (i < x)
+	{
+		put_line(board[i]);
+		i++;
 	}
 	return (0);
 }

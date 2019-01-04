@@ -6,7 +6,7 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 11:19:09 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2018/12/21 16:36:50 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/04 14:36:18 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -44,6 +44,26 @@ void	solve_tab(char *line, char **board, t_filler *filler)
 		dprintf(fd, "%s\n", board[i]);
 }
 
+void		check_start(char **board, t_filler *filler)
+{
+	int i;
+	int j;
+
+	i = -1;
+	while (++i < filler->board_height)
+	{
+		j = -1;
+		while (++j < filler->board_width)
+		{
+			if (board[i][j] == filler->player)
+			{
+				filler->start_h = i;
+				filler->start_w = j;
+			}
+		}
+	}
+}
+
 t_filler	*init_struct(void)
 {
 	t_filler	*filler;
@@ -69,7 +89,9 @@ int		main()
 	char		*line;
 	int			i;
 	int			j;
+	int			first;
 
+	first = 0;
 	filler = init_struct();
 	while (get_next_line(0, &line) != 0 && ft_strstr(line, "$$$") == NULL)
 		j = 0;
@@ -85,6 +107,9 @@ int		main()
 		if (j == filler->board_height)
 		{
 			solve_tab(line, board, filler);
+			if (first == 0)
+				check_start(board, filler);
+			first++;
 			j = 0;
 		}
 		if (line[0] >= '0' && line[0] <= '9')
