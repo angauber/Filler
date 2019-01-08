@@ -6,42 +6,66 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 11:19:09 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/04 14:36:18 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/08 17:59:07 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "filler.h"
-#include <fcntl.h>
+
+void	free_2d_tab(char **tab, int i)
+{
+	int x;
+
+	x = -1;
+	while (++x < i)
+		ft_strdel(&tab[i]);
+	free(tab);
+	tab = NULL;
+}
+
+void	free_2d_int_tab(int **tab, int i)
+{
+	int x;
+
+	x = -1;
+	while (++x < i)
+	{
+		free(&tab[i]);
+		tab[i] = NULL;
+	}
+	free(tab);
+	tab = NULL;
+}
+
+void	free_struct(t_filler *filler)
+{
+	free_2d_int_tab(filler->piece->coord, filler->board_height);
+	free(filler->piece);
+	free(filler);
+}
 
 void	solve_tab(char *line, char **board, t_filler *filler)
 {
-	int		fd;
 	char	**pattern;
 	char	**split;
 	int		i;
 	int		j;
 
 	i = -1;
-	fd = open("log.txt", O_TRUNC | O_RDWR);
 	split = ft_strsplit(line, ' ');
 	filler->piece->height = ft_atoi(split[1]);
 	filler->piece->width = ft_atoi(split[2]);
+//	free_2d_tab(split, filler->board_height);
 	pattern = malloc(sizeof(char *) * filler->piece->height);
 	j = filler->piece->width;
-	dprintf(fd, "height: %d width: %d \n\n", filler->piece->height, filler->piece->width);
 	i = -1;
 	while (++i < filler->piece->height)
 	{
 		get_next_line(0, &line);
 		pattern[i] = ft_strdup(line);
 	}
-	dprintf(fd, "pattern: \n\n");
-	for (i=0; i<filler->piece->height; i++)
-		dprintf(fd, "%s\n", pattern[i]);
-	get_pattern(board, pattern, fd, filler);
-	for (i=0; i<filler->board_height; i++)
-		dprintf(fd, "%s\n", board[i]);
+	get_pattern(board, pattern, filler);
 }
 
 void		check_start(char **board, t_filler *filler)
@@ -81,13 +105,12 @@ t_filler	*init_struct(void)
 	return (filler);
 }
 
-int		main()
+int		main(void)
 {
 	t_filler	*filler;
 	char		**split;
 	char		**board;
 	char		*line;
-	int			i;
 	int			j;
 	int			first;
 
@@ -101,6 +124,7 @@ int		main()
 	split = ft_strsplit(line, ' ');
 	filler->board_height = ft_atoi(split[1]);
 	filler->board_width = ft_atoi(split[2]);
+//	free_2d_tab(split, filler->board_height);
 	board = malloc(sizeof(char **) * filler->board_height);
 	while (get_next_line(0, &line) != 0)
 	{
@@ -117,6 +141,9 @@ int		main()
 			board[j] = ft_strsub(line, 4, filler->board_width + 4);
 			j++;
 		}
+//		ft_strdel(&line);
 	}
+//	ft_strdel(&line);
+//	free_struct(filler);
 	return (0);
 }

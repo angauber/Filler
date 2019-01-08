@@ -6,7 +6,7 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/19 10:57:17 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/02 12:21:12 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/08 16:36:05 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -15,7 +15,7 @@
 # define FILLER_H
 # include <stdio.h>
 # include <stdlib.h>
-# include "../ft_printf/include/ft_printf.h"
+# include "../libft/include/ft_printf.h"
 
 typedef struct		s_piece
 {
@@ -35,7 +35,14 @@ typedef struct		s_filler
 	struct s_piece	*piece;
 }					t_filler;
 
-void	get_pattern(char **board, char **pattern, int fd, t_filler *filler);
-void	place_piece(char **board, t_filler *filler, int fd);
+void	get_pattern(char **board, char **pattern, t_filler *filler);
+void	place_piece(char **board, t_filler *filler);
+
+void	recursive_heat(int **map, t_filler *filler);
+int		**create_heat_map(char **board, t_filler *filler);
+
+int		check_placable_piece(char **board, int i, int j, t_filler *filler, int *pos);
+int		free_height(t_piece *piece);
+int		free_width(t_piece *piece);
 
 #endif
