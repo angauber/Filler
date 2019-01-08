@@ -6,7 +6,7 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 11:19:09 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/08 17:59:07 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/08 18:10:19 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -40,7 +40,7 @@ void	free_2d_int_tab(int **tab, int i)
 
 void	free_struct(t_filler *filler)
 {
-	free_2d_int_tab(filler->piece->coord, filler->board_height);
+	free_2d_int_tab(filler->piece->coord, filler->piece->points);
 	free(filler->piece);
 	free(filler);
 }
@@ -124,7 +124,7 @@ int		main(void)
 	split = ft_strsplit(line, ' ');
 	filler->board_height = ft_atoi(split[1]);
 	filler->board_width = ft_atoi(split[2]);
-//	free_2d_tab(split, filler->board_height);
+	free_2d_tab(split, filler->board_height);
 	board = malloc(sizeof(char **) * filler->board_height);
 	while (get_next_line(0, &line) != 0)
 	{
@@ -141,9 +141,9 @@ int		main(void)
 			board[j] = ft_strsub(line, 4, filler->board_width + 4);
 			j++;
 		}
-//		ft_strdel(&line);
+		ft_strdel(&line);
 	}
-//	ft_strdel(&line);
+	ft_strdel(&line);
 //	free_struct(filler);
 	return (0);
 }

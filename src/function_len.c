@@ -6,7 +6,7 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/19 10:53:58 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/08 16:57:37 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/08 18:08:56 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -107,7 +107,8 @@ void	get_pattern(char **board, char **pattern, t_filler *filler)
 	filler->piece->points = nb_point(pattern, filler->piece->height);
 	filler->piece->width = max_width(pattern, filler->piece->height);
 	filler->piece->height = max_height(pattern, filler->piece->height);
-	filler->piece->coord = malloc(sizeof(int **) * filler->piece->points);
+	if (!(filler->piece->coord = malloc(sizeof(int **) * filler->piece->points)))
+		return ;
 	find_pos(pattern, filler);
 	place_piece(board, filler);
 }
