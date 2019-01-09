@@ -6,7 +6,7 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/19 10:53:58 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/08 18:08:56 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/09 19:16:19 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -111,4 +111,6 @@ void	get_pattern(char **board, char **pattern, t_filler *filler)
 		return ;
 	find_pos(pattern, filler);
 	place_piece(board, filler);
+//	free_2d_int_tab(filler->piece->coord, filler->piece->points);
+//	free(filler->piece->coord);
 }

@@ -6,7 +6,7 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/19 10:57:17 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/08 16:36:05 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/09 17:34:09 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -44,5 +44,9 @@ int		**create_heat_map(char **board, t_filler *filler);
 int		check_placable_piece(char **board, int i, int j, t_filler *filler, int *pos);
 int		free_height(t_piece *piece);
 int		free_width(t_piece *piece);
+
+void	free_struct(t_filler *filler);
+void	free_2d_tab(char **tab, int i);
+void	free_2d_int_tab(int **tab, int i);
 
 #endif

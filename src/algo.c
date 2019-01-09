@@ -6,7 +6,7 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/19 17:24:14 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/08 16:16:17 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/09 18:39:28 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -62,9 +62,14 @@ int		find_coord_heat(char **board, t_filler *filler, int **map)
 		}
 	}
 	if (new == 0)
+	{
+		free(pos);
+		free(bestpos);
 		return (0);
-	else
-		ft_printf("%d %d\n", bestpos[0], bestpos[1]);
+	}
+	ft_printf("%d %d\n", bestpos[0], bestpos[1]);
+	free(pos);
+	free(bestpos);
 	return (1);
 }
 
@@ -75,4 +80,6 @@ void	place_piece(char **board, t_filler *filler)
 	heat_map = create_heat_map(board, filler);
 	if (find_coord_heat(board, filler, heat_map) == 0)
 		ft_printf("0 0\n");
+//	free_2d_int_tab(heat_map, filler->board_height);
+//	free(heat_map);
 }
