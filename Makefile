@@ -2,13 +2,14 @@ NAME = angauber.filler
 
 SRC =	src/filler_start.c \
 		src/algo.c \
-		src/function_len.c \
+		src/pattern_piece.c \
 		src/heatmap.c \
 		src/place_piece.c \
+		src/free_leaks.c
 
 OBJ = $(SRC:.c=.o)
 
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
@@ -18,6 +19,7 @@ $(NAME): $(OBJ)
 	@echo "\033[0;32m [OK] \033[0m		\033[0;36m angauber.filler created \033[0m       \033"
 
 %.o : %.c
+	@make -C libft/
 	@gcc $(CFLAGS) -o $@ $(SRC) libft/libft.a
 	@echo "\033[0;32m [OK] \033[0m		\033[0;33m Compiling modified files.. \033[0m"
 

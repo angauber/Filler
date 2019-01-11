@@ -6,7 +6,7 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/19 17:24:14 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/09 18:39:28 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/11 13:26:48 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -20,7 +20,7 @@ int		point_pos(int *pos, int **map, t_filler *filler)
 	int		y;
 	int		conection;
 	char	enemy;
-	
+
 	nb = -1;
 	conection = 0;
 	enemy = (filler->player == 'O') ? 'X' : 'O';
@@ -31,6 +31,31 @@ int		point_pos(int *pos, int **map, t_filler *filler)
 		conection += map[x][y];
 	}
 	return (conection);
+}
+
+int		cut_end_fch(int new, int *pos, int *bestpos)
+{
+	if (new == 0)
+	{
+		free(pos);
+		free(bestpos);
+		return (0);
+	}
+	ft_printf("%d %d\n", bestpos[0], bestpos[1]);
+	free(pos);
+	free(bestpos);
+	return (1);
+}
+
+int		*actual_pos(int i, int j)
+{
+	int *array;
+
+	if (!(array = (int *)malloc(sizeof(int) * 2)))
+		return (NULL);
+	array[0] = i;
+	array[1] = j;
+	return (array);
 }
 
 int		find_coord_heat(char **board, t_filler *filler, int **map)
@@ -50,27 +75,16 @@ int		find_coord_heat(char **board, t_filler *filler, int **map)
 		j = -1;
 		while (++j < filler->board_width)
 		{
-			if (check_placable_piece(board, i, j, filler, pos) == 1)
+			if (check_placable_piece(board, filler, pos, actual_pos(i, j)) == 1)
 			{
-				if (new == 0 || point_pos(pos, map, filler) < point_pos(bestpos, map, filler))
-				{
-					bestpos[0] = pos[0];
-					bestpos[1] = pos[1];
-				}
+				if (new == 0 || point_pos(pos, map, filler) <
+				point_pos(bestpos, map, filler))
+					change_best(pos, bestpos);
 				new = 1;
 			}
 		}
 	}
-	if (new == 0)
-	{
-		free(pos);
-		free(bestpos);
-		return (0);
-	}
-	ft_printf("%d %d\n", bestpos[0], bestpos[1]);
-	free(pos);
-	free(bestpos);
-	return (1);
+	return (cut_end_fch(new, pos, bestpos));
 }
 
 void	place_piece(char **board, t_filler *filler)
@@ -80,6 +94,5 @@ void	place_piece(char **board, t_filler *filler)
 	heat_map = create_heat_map(board, filler);
 	if (find_coord_heat(board, filler, heat_map) == 0)
 		ft_printf("0 0\n");
-//	free_2d_int_tab(heat_map, filler->board_height);
-//	free(heat_map);
+	free_2d_int_tab(heat_map, filler->board_height);
 }

@@ -6,14 +6,13 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 11:19:09 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/04 13:43:39 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/11 15:25:31 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <stdlib.h>
-#include "../ft_printf/include/ft_printf.h"
+#include "../src/filler.h"
 
 #define KMAG  "\x1B[35m"
 #define KCYN  "\x1B[36m"
@@ -44,23 +43,19 @@ void	put_line(char *str)
 
 void	print_tab(char **board, int len)
 {
-	size_t i;
+	int i;
 
-	i = 0;
-	while (i < len)
+	i = -1;
+	while (++i < len)
 	{
 		put_line(board[i]);
-		i++;
 	}
-	i = 0;
 	usleep(100000);
-	while (i < len)
+	i = -1;
+	while (++i < len)
 	{
-//		ft_printf("\033[1A");  // move cursor one line up
-//		ft_printf("\033[2J"); // delete till end of line
-		ft_printf("\033[2K"); // delete till end of line
-		ft_printf("\033[1A");  // move cursor one line up
-		i++;
+		ft_printf("\033[2K");
+		ft_printf("\033[1A");
 	}
 }
 
@@ -72,29 +67,58 @@ void	print_vs(char *s1, char *s2)
 	ft_printf("\n\n");
 }
 
-int		main()
+void	print_map(char **board, int x)
+{
+	int i;
+
+	i = -1;
+	while (++i < x)
+	{
+		put_line(board[i]);
+		ft_strdel(&board[i]);
+	}
+	free(board);
+}
+
+void	board(char *line, int x, int y)
 {
 	char	**board;
 	char	**split;
-	char	*line;
-	char	*s1;
-	char	*s2;
-	int		i;
-	int		x;
-	int		y;
 	int		j;
 
-	while (get_next_line(0, &line) != 0 && ft_strstr(line, "launched") == NULL)
-		x = 0;
-	while (line[x] != '/')
-		x++;
-	x++;
-	i = x;
-	while (line[i] != '.')
-		i++;
+	split = ft_strsplit(line, ' ');
+	x = ft_atoi(split[1]);
+	y = ft_atoi(split[2]);
+	j = 0;
+	board = malloc(sizeof(char **) * x);
+	while (get_next_line(0, &line) != 0)
+	{
+		if (j == x)
+		{
+			print_tab(board, x);
+			for (int i = 0; i < x; i++)
+				ft_strdel(&board[i]);
+			j = 0;
+		}
+		if (line[0] >= '0' && line[0] <= '9')
+		{
+			board[j] = ft_strsub(line, 4, y + 4);
+			j++;
+		}
+		ft_strdel(&line);
+	}
+	print_map(board, x);
+}
+
+void	visual(char *line, int x, int i)
+{
+	char	*s1;
+	char	*s2;
+
 	s1 = ft_strsub(line, x, i);
 	while (get_next_line(0, &line) != 0 && ft_strstr(line, "launched") == NULL)
-		x = 0;
+		ft_strdel(&line);
+	x = 0;
 	while (line[x] != '/')
 		x++;
 	x++;
@@ -104,30 +128,27 @@ int		main()
 	s2 = ft_strsub(line, x, i);
 	print_vs(s1, s2);
 	while (get_next_line(0, &line) != 0 && ft_strstr(line, "Plateau") == NULL)
-		x = 0;
-	split = ft_strsplit(line, ' ');
-	x = ft_atoi(split[1]);
-	y = ft_atoi(split[2]);
-	board = malloc(sizeof(char **) * x);
-	j = 0;
-	while (get_next_line(0, &line) != 0)
-	{
-		if (j == x)
-		{
-			print_tab(board, x);
-			j = 0;
-		}
-		if (line[0] >= '0' && line[0] <= '9')
-		{
-			board[j] = ft_strsub(line, 4, y + 4);
-			j++;
-		}
-	}
-	i = 0;
-	while (i < x)
-	{
-		put_line(board[i]);
+		ft_strdel(&line);
+	board(line, 0, 0);
+}
+
+int		main(void)
+{
+	char	**board;
+	char	**split;
+	char	*line;
+	int		i;
+	int		x;
+
+	x = 0;
+	while (get_next_line(0, &line) != 0 && ft_strstr(line, "launched") == NULL)
+		ft_strdel(&line);
+	while (line[x] != '/')
+		x++;
+	x++;
+	i = x;
+	while (line[i] != '.')
 		i++;
-	}
+	visual(line, x, i);
 	return (0);
 }

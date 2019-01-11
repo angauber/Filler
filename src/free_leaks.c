@@ -6,7 +6,7 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/01/09 17:28:28 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/09 17:47:24 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/11 12:20:33 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -36,8 +36,15 @@ void	free_2d_int_tab(int **tab, int i)
 	tab = NULL;
 }
 
-void	free_struct(t_filler *filler)
+void	free_struct(t_filler *filler, char **board)
 {
 	free(filler->piece);
 	free(filler);
+	free(board);
+}
+
+void	change_best(int *pos, int *bestpos)
+{
+	bestpos[0] = pos[0];
+	bestpos[1] = pos[1];
 }

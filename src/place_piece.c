@@ -6,7 +6,7 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/19 17:24:14 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/09 16:17:35 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/11 13:36:45 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -43,33 +43,45 @@ int		free_width(t_piece *piece)
 	return (width);
 }
 
-int		check_placable_piece(char **board, int i, int j, t_filler *filler, int *pos)
+void	change_pos(t_filler *filler, int *pos, int *actpos)
+{
+	pos[0] = (actpos[0] - filler->piece->height);
+	pos[1] = (actpos[1] - filler->piece->width);
+	free(actpos);
+}
+
+int		free_cpp(int *actpos)
+{
+	free(actpos);
+	return (0);
+}
+
+int		check_placable_piece(char **board, t_filler *filler, int *pos,
+		int *actpos)
 {
 	int		nb;
 	int		x;
 	int		y;
-	int		width;
-	int		height;
 	int		conection;
-	char	enemy;
-	
+
 	nb = -1;
 	conection = 0;
-	width = free_width(filler->piece);
-	height = free_height(filler->piece);
-	enemy = (filler->player == 'O') ? 'X' : 'O';
+	filler->piece->width = free_width(filler->piece);
+	filler->piece->height = free_height(filler->piece);
 	while (++nb < filler->piece->points)
 	{
-		x = i + filler->piece->coord[nb][0] - height;
-		y = j + filler->piece->coord[nb][1] - width;
-		if (x >= filler->board_height || y >= filler->board_width || (x < filler->board_height && y < filler->board_width && (board[x][y] == enemy || (conection > 0 && board[x][y] != '.'))))
-			return (0);
-		else if (x < filler->board_height && y < filler->board_width && board[x][y] == filler->player)
+		x = actpos[0] + filler->piece->coord[nb][0] - filler->piece->height;
+		y = actpos[1] + filler->piece->coord[nb][1] - filler->piece->width;
+		if (x >= filler->board_height || y >= filler->board_width || (x <
+		filler->board_height && y < filler->board_width && (board[x][y] ==
+		filler->enemy || (conection > 0 && board[x][y] != '.'))))
+			return (free_cpp(actpos));
+		else if (x < filler->board_height && y < filler->board_width &&
+		board[x][y] == filler->player)
 			conection++;
 	}
 	if (conection != 1)
-		return (0);
-	pos[0] = (i - height);
-	pos[1] = (j - width);
+		return (free_cpp(actpos));
+	change_pos(filler, pos, actpos);
 	return (1);
 }
