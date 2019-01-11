@@ -6,21 +6,21 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/10/23 13:55:54 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2018/12/10 14:44:19 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/11 17:55:05 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	return_vallue(char *tmp, int ret)
+static int	return_value(char *tmp, int ret)
 {
 	if (!*tmp && ret == 0)
 	{
-		free(tmp);
+		ft_strdel(&tmp);
 		return (0);
 	}
-	free(tmp);
+	ft_strdel(&tmp);
 	return (1);
 }
 
@@ -57,9 +57,9 @@ int			get_next_line(const int fd, char **line)
 		buf[ret] = '\0';
 		frd = tmp;
 		tmp = ft_strjoin(frd, buf);
-		free(frd);
+		ft_strdel(&frd);
 	}
 	if (fill_line(line, tmp, str, fd) == -1)
 		return (-1);
-	return (return_vallue(tmp, ret));
+	return (return_value(tmp, ret));
 }
