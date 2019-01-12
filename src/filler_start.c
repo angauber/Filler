@@ -6,7 +6,7 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 11:19:09 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/11 17:36:07 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/12 14:04:47 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -18,14 +18,12 @@ void		solve_tab(char *line, char **board, t_filler *filler)
 	char	**pattern;
 	char	**split;
 	int		i;
-	int		j;
 
 	i = -1;
 	split = ft_strsplit(line, ' ');
 	filler->piece->height = ft_atoi(split[1]);
 	filler->piece->width = ft_atoi(split[2]);
 	pattern = malloc(sizeof(char *) * filler->piece->height);
-	j = filler->piece->width;
 	i = -1;
 	while (++i < filler->piece->height)
 	{

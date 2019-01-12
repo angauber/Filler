@@ -6,15 +6,14 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/19 10:57:17 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/11 14:07:41 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/12 14:13:11 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #ifndef FILLER_H
 # define FILLER_H
-# include <stdio.h>
-# include <stdlib.h>
+# include "../libft/src/libft.h"
 # include "../libft/include/ft_printf.h"
 
 typedef struct		s_piece

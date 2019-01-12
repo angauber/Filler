@@ -6,12 +6,12 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/18 11:19:09 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/11 17:28:30 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/12 14:09:40 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include "../src/filler.h"
+#include "filler.h"
 
 #define KMAG  "\x1B[35m"
 #define KCYN  "\x1B[36m"
@@ -95,6 +95,15 @@ void	print_end(char *line)
 	ft_printf(KMAG "%d\n" RESET, j);
 }
 
+void	free_start_board(char **split, char *line)
+{
+	ft_strdel(&split[0]);
+	ft_strdel(&split[1]);
+	ft_strdel(&split[2]);
+	free(split);
+	ft_strdel(&line);
+}
+
 void	board(char *line, int x, int y)
 {
 	char	**board;
@@ -104,11 +113,7 @@ void	board(char *line, int x, int y)
 	split = ft_strsplit(line, ' ');
 	x = ft_atoi(split[1]);
 	y = ft_atoi(split[2]);
-	ft_strdel(&split[0]);
-	ft_strdel(&split[1]);
-	ft_strdel(&split[2]);
-	free(split);
-	ft_strdel(&line);
+	free_start_board(split, line);
 	j = 0;
 	board = malloc(sizeof(char **) * x);
 	while (get_next_line(0, &line) != 0)

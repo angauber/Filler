@@ -9,7 +9,7 @@ SRC =	src/filler_start.c \
 
 OBJ = $(SRC:.c=.o)
 
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
@@ -32,6 +32,12 @@ fclean: clean
 	@make fclean -C libft/
 	@echo "\033[0;32m [OK] \033[0m       	\033[0;31m deleting angauber.filler\033[0m"
 	@rm -rf $(NAME)
+	@echo "\033[0;32m [OK] \033[0m       	\033[0;31m deleting visual\033[0m"
+	@rm -rf visual
+
+visual:
+	@make -C libft/
+	@gcc $(CFLAGS) src/visualisation.c libft/libft.a -o visual
 
 re: fclean all
 

@@ -6,7 +6,7 @@
 /*   By: angauber <angauber@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/12/19 17:24:14 by angauber     #+#   ##    ##    #+#       */
-/*   Updated: 2019/01/11 13:26:48 by angauber    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/01/12 14:05:21 by angauber    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -19,11 +19,9 @@ int		point_pos(int *pos, int **map, t_filler *filler)
 	int		x;
 	int		y;
 	int		conection;
-	char	enemy;
 
 	nb = -1;
 	conection = 0;
-	enemy = (filler->player == 'O') ? 'X' : 'O';
 	while (++nb < filler->piece->points)
 	{
 		x = pos[0] + filler->piece->coord[nb][0];
